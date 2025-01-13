@@ -29,8 +29,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.ZonedDateTime;
-
-import static com.couchbase.client.util.OperationsToJson.FORMATTER;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Example handlers for the in-memory request tracer.
@@ -41,6 +40,8 @@ import static com.couchbase.client.util.OperationsToJson.FORMATTER;
 @Stability.Volatile
 public class ExampleHandlers {
   private static final Logger logger = LoggerFactory.getLogger(ExampleHandlers.class);
+
+  private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss.SSSX");
 
   private ExampleHandlers() {
   }

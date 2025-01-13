@@ -23,7 +23,7 @@ import com.couchbase.client.spans.SpansForOperation;
 import org.jspecify.annotations.Nullable;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.stream.Collectors;
 
 /**
@@ -97,7 +97,7 @@ public class Operation {
   /**
    * Returns when the operation started, from the SDK's point of view.
    */
-  public ZonedDateTime start() {
+  public Instant start() {
     return spans.start();
   }
 

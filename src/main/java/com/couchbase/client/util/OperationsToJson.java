@@ -26,11 +26,18 @@ import com.couchbase.client.operations.Operations;
 import com.couchbase.client.operations.RequestEncoding;
 
 import java.time.Duration;
-import java.time.format.DateTimeFormatter;
+import java.time.Instant;
+
+import static com.couchbase.client.util.DurationUtil.toMicros;
 
 @Stability.Internal
 public class OperationsToJson {
-  public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss.SSSX");
+  private OperationsToJson() {
+  }
+
+  public static String toJson(Instant instant) {
+    return instant.toString();
+  }
 
   public static ArrayNode toJson(Operations operation) {
     ArrayNode out = Mapper.createArrayNode();
@@ -44,8 +51,8 @@ public class OperationsToJson {
     ObjectNode out = Mapper.createObjectNode();
     out.put("name", operation.name())
       .put("service", operation.service())
-      .put("start", operation.start().format(FORMATTER))
-      .put("durationUs", operation.duration().toNanos() / 1000);
+      .put("start", toJson(operation.start()))
+      .put("durationUs", toMicros(operation.duration()));
     String statement = operation.statement();
     String documentId = operation.documentId();
     String bucket = operation.bucket();
@@ -81,15 +88,15 @@ public class OperationsToJson {
 
   public static ObjectNode toJson(RequestEncoding op) {
     ObjectNode out = Mapper.createObjectNode();
-    out.put("durationUs", op.duration().toNanos() / 1000)
-      .put("start", op.start().format(FORMATTER));
+    out.put("durationUs", toMicros(op.duration()))
+      .put("start", toJson(op.start()));
     return out;
   }
 
   public static ObjectNode toJson(NetworkCall call) {
     ObjectNode out = Mapper.createObjectNode();
-    out.put("durationUs", call.duration().toNanos() / 1000)
-      .put("start", call.start().format(FORMATTER))
+    out.put("durationUs", toMicros(call.duration()))
+      .put("start", toJson(call.start()))
       .put("host", call.remoteHost())
       .put("port", call.remotePort());
     String durability = call.durability();
@@ -98,7 +105,7 @@ public class OperationsToJson {
     }
     Duration serverDuration = call.serverDuration();
     if (serverDuration != null) {
-      out.put("serverDurationUs", serverDuration.toNanos() / 1000);
+      out.put("serverDurationUs", toMicros(serverDuration));
     }
     return out;
   }

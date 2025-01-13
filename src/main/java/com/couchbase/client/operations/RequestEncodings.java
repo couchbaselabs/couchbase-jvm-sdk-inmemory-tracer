@@ -20,6 +20,8 @@ import com.couchbase.client.core.annotation.Stability;
 
 import java.util.List;
 
+import static com.couchbase.client.util.DurationUtil.toMicros;
+
 /**
  * Represents a number of {@link RequestEncoding}.
  */
@@ -37,7 +39,7 @@ public class RequestEncodings {
    * in this object, in microseconds.
    */
   public Durations durationsMicroseconds() {
-    return new Durations(requestEncodingSpans.stream().map((o -> (o.duration().toNanos()) / 1000)));
+    return new Durations(requestEncodingSpans.stream().map(o -> toMicros(o.duration())));
   }
 
   /**

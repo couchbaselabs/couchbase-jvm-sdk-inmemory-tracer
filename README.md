@@ -171,13 +171,13 @@ The `ExampleHandlers::writeAllOperations` handler, which can be enabled to run (
 [ {
   "name" : "query",
   "service" : "query",
-  "start" : "2025-01-13T14-34-57.397Z",
+  "start" : "2025-01-13T14:34:57.397123Z",
   "durationUs" : 33504,
   "statement" : "SELECT 'hello' AS GREETING",
   "retries" : 0,
   "networkCalls" : [ {
     "durationUs" : 7372,
-    "start" : "2025-01-13T14-34-57.402Z",
+    "start" : "2025-01-13T14:34:57.402123Z",
     "host" : "192.168.0.99",
     "port" : 8093
   } ]
@@ -190,14 +190,14 @@ While this is the output from a single failure query:
 [ {
   "name" : "query",
   "service" : "query",
-  "start" : "2025-01-13T14-55-03.375Z",
+  "start" : "2025-01-13T14:55:03.375123Z",
   "durationUs" : 54476,
   "statement" : "BAD SQL++ TO FORCE A FAILURE",
   "exception" : "com.couchbase.client.core.error.ParsingFailureException: Parsing of the input failed {\"completed\":true,\"coreId\":\"0x5685c00c00000001\",\"errors\":[{\"additional\":{\"line\":1,\"column\":5},\"code\":3000,\"message\":\"syntax error - line 1, column 5, near 'BAD ', at: SQL\",\"retry\":false}],\"httpStatus\":400,\"idempotent\":false,\"lastDispatchedFrom\":\"192.168.1.120:58521\",\"lastDispatchedTo\":\"192.168.0.99:8093\",\"requestId\":5,\"requestType\":\"QueryRequest\",\"retried\":0,\"service\":{\"operationId\":\"null\",\"statement\":\"BAD SQL++ TO FORCE A FAILURE\",\"type\":\"query\"},\"timeoutMs\":75000,\"timings\":{\"dispatchMicros\":9378,\"totalDispatchMicros\":9378,\"totalMicros\":52305}}",
   "retries" : 0,
   "networkCalls" : [ {
     "durationUs" : 9371,
-    "start" : "2025-01-13T14-55-03.382Z",
+    "start" : "2025-01-13T14:55:03.382123Z",
     "host" : "192.168.0.99",
     "port" : 8093
   } ]
@@ -209,7 +209,7 @@ And the output from a single successful KV operation:
 [ {
   "name" : "upsert",
   "service" : "kv",
-  "start" : "2025-01-13T14-59-25.275Z",
+  "start" : "2025-01-13T14:59:25.275123Z",
   "durationUs" : 27169,
   "documentId" : "id",
   "bucket" : "default",
@@ -218,11 +218,11 @@ And the output from a single successful KV operation:
   "retries" : 0,
   "requestEncoding" : {
     "durationUs" : 3315,
-    "start" : "2025-01-13T14-59-25.275Z"
+    "start" : "2025-01-13T14:59:25.275123Z"
   },
   "networkCalls" : [ {
     "durationUs" : 13081,
-    "start" : "2025-01-13T14-59-25.286Z",
+    "start" : "2025-01-13T14:59:25.286123Z",
     "host" : "192.168.0.99",
     "port" : 11210,
     "durability" : "NONE",
