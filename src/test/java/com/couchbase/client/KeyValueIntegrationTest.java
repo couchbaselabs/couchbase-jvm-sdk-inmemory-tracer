@@ -13,13 +13,12 @@ import org.junit.jupiter.api.Timeout;
 import java.time.Duration;
 import java.util.List;
 
-import static com.couchbase.client.InMemoryTracerOptions.inMemoryTracerOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @Timeout(30)
 public class KeyValueIntegrationTest {
-  private static final TestInMemoryRequestTracer testTracer = new TestInMemoryRequestTracer(inMemoryTracerOptions());
+  private static final TestInMemoryRequestTracer testTracer = new TestInMemoryRequestTracer();
   private static final CouchbaseResources test = new CouchbaseResources(testTracer.tracer());
 
   @BeforeAll

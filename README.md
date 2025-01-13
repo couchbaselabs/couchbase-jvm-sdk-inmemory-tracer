@@ -17,7 +17,7 @@ Include the library in your project (further instructions will be provided once 
 Provide an `InMemoryRequestTracer` when creating your Couchbase JVM SDK `Cluster` object:
 
 ```
-InMemoryRequestTracer tracer = new InMemoryRequestTracer();
+InMemoryRequestTracer tracer = InMemoryRequestTracer.builder().build();
 
 Cluster cluster = Cluster.connect("localhost", ClusterOptions.clusterOptions("username", "password")
     .environment(env -> env.requestTracer(tracer)));
@@ -29,13 +29,15 @@ By default, it will write an aggregated summary of all operations to SLF4J log, 
 To also make it write all operations to files, in JSON format, use:
 
 ```
-InMemoryRequestTracer tracer = new InMemoryRequestTracer(InMemoryTracerOptions.inMemoryTracerOptions()
-    .handlers(List.of(
-      // Write aggregated report to SLF4J log.
-      ExampleHandlers::writeAggregatedReport,
+InMemoryRequestTracer tracer = InMemoryRequestTracer.builder()
+  .handlers(List.of(
+    // Write aggregated report to SLF4J log.
+    ExampleHandlers::writeAggregatedReport,
 
-      // Write all operations, in JSON format, to files.
-      ExampleHandlers::writeAllOperations)));
+    // Write all operations, in JSON format, to files.
+    ExampleHandlers::writeAllOperations
+  ))
+  .build();
 ```
 
 Users are encouraged to use the provided handlers as a starting point for their own custom handlers and reports.
@@ -43,14 +45,16 @@ Users are encouraged to use the provided handlers as a starting point for their 
 An example of a trivial custom handler:
 
 ```
-InMemoryRequestTracer tracer = new InMemoryRequestTracer(InMemoryTracerOptions.inMemoryTracerOptions()
+InMemoryRequestTracer tracer = InMemoryRequestTracer.builder()
   .handlers(List.of(
     (operations, sinceLastReport) -> {
       logger.info("There have been {} operations in last {}", operations.operations().size(), sinceLastReport);
-    })));
+    }
+  ))
+  .build();
 ```
 
-`InMemoryTracerOptions` allows customising other parameters, such as the interval in which the handlers are called (which defaults to 10 seconds).  
+`InMemoryRequestTracer.Builder` allows customising other parameters, such as the interval in which the handlers are called (which defaults to 10 seconds).  
 
 # Sample Outputs
 

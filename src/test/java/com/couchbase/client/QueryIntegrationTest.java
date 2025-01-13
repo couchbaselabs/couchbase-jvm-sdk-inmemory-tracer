@@ -1,8 +1,6 @@
 package com.couchbase.client;
 
 import com.couchbase.client.core.error.ParsingFailureException;
-import com.couchbase.client.java.Collection;
-import com.couchbase.client.java.json.JsonObject;
 import com.couchbase.client.operations.Operation;
 import com.couchbase.client.util.CouchbaseResources;
 import com.couchbase.client.util.TestInMemoryRequestTracer;
@@ -14,14 +12,13 @@ import org.junit.jupiter.api.Timeout;
 import java.time.Duration;
 import java.util.List;
 
-import static com.couchbase.client.InMemoryTracerOptions.inMemoryTracerOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Timeout(30)
 public class QueryIntegrationTest {
-  private static final TestInMemoryRequestTracer testTracer = new TestInMemoryRequestTracer(inMemoryTracerOptions());
+  private static final TestInMemoryRequestTracer testTracer = new TestInMemoryRequestTracer();
   private static final CouchbaseResources test = new CouchbaseResources(testTracer.tracer());
 
   @BeforeAll
