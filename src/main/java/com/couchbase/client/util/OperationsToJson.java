@@ -91,8 +91,11 @@ public class OperationsToJson {
     out.put("durationUs", call.duration().toNanos() / 1000)
       .put("start", call.start().format(FORMATTER))
       .put("host", call.remoteHost())
-      .put("port", call.remotePort())
-      .put("durability", call.durability());
+      .put("port", call.remotePort());
+    String durability = call.durability();
+    if (durability != null) {
+      out.put("durability", call.durability());
+    }
     Duration serverDuration = call.serverDuration();
     if (serverDuration != null) {
       out.put("serverDurationUs", serverDuration.toNanos() / 1000);

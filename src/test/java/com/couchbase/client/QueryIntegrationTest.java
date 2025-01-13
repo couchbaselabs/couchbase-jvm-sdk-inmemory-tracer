@@ -1,5 +1,6 @@
 package com.couchbase.client;
 
+import com.couchbase.client.core.error.ParsingFailureException;
 import com.couchbase.client.java.Collection;
 import com.couchbase.client.java.json.JsonObject;
 import com.couchbase.client.operations.Operation;
@@ -16,6 +17,7 @@ import java.util.List;
 import static com.couchbase.client.InMemoryTracerOptions.inMemoryTracerOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Timeout(30)
 public class QueryIntegrationTest {
@@ -36,6 +38,28 @@ public class QueryIntegrationTest {
   public void query() {
     String statement = "SELECT 'hello' AS GREETING";
     test.cluster().query(statement);
+    InMemoryRequestTracerHandlerOperations ops = testTracer.waitForNonEmptyOperationsAndClear();
+    assertEquals(1, ops.operations().size());
+    List<Operation> operations = ops.operations().operations();
+    assertEquals(1, operations.size());
+    Operation op = operations.get(0);
+    assertEquals("query", op.name());
+    assertNull(op.bucket());
+    assertNull(op.scope());
+    assertNull(op.collection());
+    assertEquals(0, op.retries());
+    assertEquals(statement, op.statement());
+    assertNull(op.documentId());
+
+    // Just check nothing is thrown
+    ExampleReports.exampleAggregatedReport(ops);
+    ExampleReports.exampleOperationsOutput(ops);
+  }
+
+  @Test
+  public void failingQuery() {
+    String statement = "BAD SQL++ TO FORCE A FAILURE";
+    assertThrows(ParsingFailureException.class, () -> test.cluster().query(statement));
     InMemoryRequestTracerHandlerOperations ops = testTracer.waitForNonEmptyOperationsAndClear();
     assertEquals(1, ops.operations().size());
     List<Operation> operations = ops.operations().operations();
