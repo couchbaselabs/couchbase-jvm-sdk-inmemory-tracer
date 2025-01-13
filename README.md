@@ -42,6 +42,101 @@ Users are encouraged to use the provided handlers as a starting point for their 
 
 `InMemoryTracerOptions` allows customising other parameters, such as the interval in which the handlers are called (which defaults to 10 seconds).  
 
+# Sample Outputs
+
+The `ExampleHandlers::writeAggregatedReport` handler (which is the default) will output something like (a single KV operation was run for this example, which succeeded):
+
+```
+{
+  "kv" : {
+    "upsert" : {
+      "successfulOps" : {
+        "counts" : {
+          "uniqueDocumentIds" : 1,
+          "operations" : 1
+        },
+        "operationDurationsMicros" : {
+          "metrics" : [ {
+            "name" : "count",
+            "value" : 1
+          }, {
+            "name" : "min",
+            "value" : 18622.0
+          }, {
+            "name" : "median",
+            "value" : 18622.0
+          }, {
+            "name" : "p95",
+            "value" : 18622.0
+          }, {
+            "name" : "max",
+            "value" : 18622.0
+          } ]
+        },
+        "serverDurationsMicros" : {
+          "metrics" : [ {
+            "name" : "count",
+            "value" : 1
+          }, {
+            "name" : "min",
+            "value" : 135.0
+          }, {
+            "name" : "median",
+            "value" : 135.0
+          }, {
+            "name" : "p95",
+            "value" : 135.0
+          }, {
+            "name" : "max",
+            "value" : 135.0
+          } ]
+        },
+        "requestEncodingDurationsMicros" : {
+          "metrics" : [ {
+            "name" : "count",
+            "value" : 1
+          }, {
+            "name" : "min",
+            "value" : 2722.0
+          }, {
+            "name" : "median",
+            "value" : 2722.0
+          }, {
+            "name" : "p95",
+            "value" : 2722.0
+          }, {
+            "name" : "max",
+            "value" : 2722.0
+          } ]
+        }
+      }
+    }
+  }
+}
+```
+
+The `ExampleHandlers::writeAllOperations` handler, which can be enabled to run (see above), outputs a new file every interval period containing something like (a single SQL++ query was run for this example):
+
+```
+[ {
+  "name" : "query",
+  "service" : "query",
+  "start" : "2025-01-13T14-34-57.397Z",
+  "durationUs" : 33504,
+  "statement" : "SELECT 'hello' AS GREETING",
+  "retries" : 0,
+  "networkCalls" : [ {
+    "durationUs" : 7372,
+    "start" : "2025-01-13T14-34-57.402Z",
+    "host" : "192.168.0.99",
+    "port" : 8093,
+    "durability" : null
+  } ]
+} ]
+```
+
+Users should feel free to add their own handlers outputting metrics or JSON to their desired specification.
+
 # Compatibility
 This is provided as a separate library, to make it easier to use against various versions of the Couchbase SDKs.
 
