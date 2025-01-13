@@ -12,7 +12,7 @@ Users can handle the spans however they want, with two example handlers provided
 The library is intended for temporary use, to diagnose issues, rather than permanently instrumenting an application.  Full OpenTelemetry consumers such as Honeycomb are the better option for that.
 
 # Usage
-Include the library in your project.
+Include the library in your project (further instructions will be provided once the library is published to Sonatype).
 
 Provide an `InMemoryRequestTracer` when creating your Couchbase JVM SDK `Cluster` object:
 
@@ -39,6 +39,16 @@ InMemoryRequestTracer tracer = new InMemoryRequestTracer(InMemoryTracerOptions.i
 ```
 
 Users are encouraged to use the provided handlers as a starting point for their own custom handlers and reports.
+
+An example of a trivial custom handler:
+
+```
+InMemoryRequestTracer tracer = new InMemoryRequestTracer(InMemoryTracerOptions.inMemoryTracerOptions()
+  .handlers(List.of(
+    (operations, sinceLastReport) -> {
+      logger.info("There have been {} operations in last {}", operations.operations().size(), sinceLastReport);
+    })));
+```
 
 `InMemoryTracerOptions` allows customising other parameters, such as the interval in which the handlers are called (which defaults to 10 seconds).  
 
@@ -135,6 +145,8 @@ The `ExampleHandlers::writeAllOperations` handler, which can be enabled to run (
 } ]
 ```
 
+The outputs will include further information about failed operations, if any did.
+
 Users should feel free to add their own handlers outputting metrics or JSON to their desired specification.
 
 # Compatibility
@@ -147,9 +159,10 @@ The SDK interfaces this library relies on have been stable from core-io 2.3.4 on
 # Support
 The library is not a fully supported Couchbase product, but is provided as-is, with best-effort support.  
 
-Contributions are welcome, and users are encouraged to use the provided handlers as a starting point for their own custom handlers: please feel free to copy them and modify to your own needs.
+Contributions are welcome, and users are encouraged to use the provided handlers as a starting point for their own custom handlers.
+Please feel free to copy them and modify to your own needs.
 
-The intent is that the library be used to temporarily diagnose issues, rather than permanently instrumenting an application.  Everything in this library should be regarded as volatile.
+The intent is that the library be used to temporarily diagnose issues, rather than permanently instrumenting an application.  Everything in this library should be regarded as potentially volatile and subject to change.
 
 # Performance Impact
 The library is not expected to dramatically impact performance.
