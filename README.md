@@ -204,6 +204,33 @@ While this is the output from a single failure query:
 } ]
 ```
 
+And the output from a single successful KV operation:
+```
+[ {
+  "name" : "upsert",
+  "service" : "kv",
+  "start" : "2025-01-13T14-59-25.275Z",
+  "durationUs" : 27169,
+  "documentId" : "id",
+  "bucket" : "default",
+  "scope" : "_default",
+  "collection" : "_default",
+  "retries" : 0,
+  "requestEncoding" : {
+    "durationUs" : 3315,
+    "start" : "2025-01-13T14-59-25.275Z"
+  },
+  "networkCalls" : [ {
+    "durationUs" : 13081,
+    "start" : "2025-01-13T14-59-25.286Z",
+    "host" : "192.168.0.99",
+    "port" : 11210,
+    "durability" : "NONE",
+    "serverDurationUs" : 126
+  } ]
+} ]
+```
+
 Users should feel free to add their own handlers outputting metrics or JSON to their desired specification.
 
 # Compatibility
