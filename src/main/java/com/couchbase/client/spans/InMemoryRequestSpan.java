@@ -35,7 +35,7 @@ import java.util.HashMap;
 @Stability.Internal
 public class InMemoryRequestSpan implements RequestSpan {
   private final String name;
-  private final InMemoryRequestSpan parent;
+  private final @Nullable InMemoryRequestSpan parent;
   private final long startNanos = System.nanoTime();
   private long endNanos = System.nanoTime();
   private final ZonedDateTime startLocal = ZonedDateTime.now();
@@ -43,7 +43,7 @@ public class InMemoryRequestSpan implements RequestSpan {
   private @Nullable Throwable exception = null;
   private RequestSpan.@Nullable StatusCode status;
 
-  public InMemoryRequestSpan(String name, InMemoryRequestSpan parent) {
+  public InMemoryRequestSpan(String name, @Nullable InMemoryRequestSpan parent) {
     this.name = name;
     this.parent = parent;
   }
@@ -92,7 +92,7 @@ public class InMemoryRequestSpan implements RequestSpan {
     return name;
   }
 
-  public InMemoryRequestSpan parent() {
+  public @Nullable InMemoryRequestSpan parent() {
     return parent;
   }
 
@@ -132,8 +132,7 @@ public class InMemoryRequestSpan implements RequestSpan {
     return attributes.get(key);
   }
 
-  @Nullable
-  public Throwable exception() {
+  public @Nullable Throwable exception() {
     return exception;
   }
 

@@ -135,8 +135,9 @@ public class Operations {
     HashMap<String, Integer> exceptionCounts = new HashMap<>();
 
     operations.forEach(op -> {
-      if (op.spans().span().exception() != null) {
-        String exceptionName = op.spans().span().exception().getClass().getSimpleName();
+      Throwable exception = op.spans().span().exception();
+      if (exception != null) {
+        String exceptionName = exception.getClass().getSimpleName();
         exceptionCounts.merge(exceptionName, 1, Integer::sum);
       }
     });
