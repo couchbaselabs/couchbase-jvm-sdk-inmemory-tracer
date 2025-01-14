@@ -19,7 +19,7 @@ import com.couchbase.client.core.annotation.Stability;
 import com.couchbase.client.spans.InMemoryRequestSpan;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 /**
  * An operation generally needs to encode the request before sending it over the wire, which is represented by this class.
@@ -50,7 +50,7 @@ public class RequestEncoding {
   /**
    * When this network call started, from the SDK's point of view.
    */
-  public ZonedDateTime start() {
-    return span().startLocal();
+  public Instant start() {
+    return span().startInstant();
   }
 }

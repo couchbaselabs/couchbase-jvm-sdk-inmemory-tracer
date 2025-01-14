@@ -22,7 +22,6 @@ import org.jspecify.annotations.Nullable;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.HashMap;
 
 /**
@@ -38,7 +37,7 @@ public class InMemoryRequestSpan implements RequestSpan {
   private final @Nullable InMemoryRequestSpan parent;
   private final long startNanos = System.nanoTime();
   private long endNanos = System.nanoTime();
-  private final ZonedDateTime startLocal = ZonedDateTime.now();
+  private final Instant startInstant = Instant.now();
   private final HashMap<String, Object> attributes = new HashMap<>();
   private @Nullable Throwable exception = null;
   private RequestSpan.@Nullable StatusCode status;
@@ -100,8 +99,8 @@ public class InMemoryRequestSpan implements RequestSpan {
     return startNanos;
   }
 
-  public ZonedDateTime startLocal() {
-    return startLocal;
+  public Instant startInstant() {
+    return startInstant;
   }
 
   public long endNanos() {

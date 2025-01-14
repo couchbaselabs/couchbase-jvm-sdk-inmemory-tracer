@@ -28,13 +28,11 @@ import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -49,7 +47,7 @@ public class InMemoryRequestTracer implements RequestTracer {
 
   private List<InMemoryRequestSpan> spans = new ArrayList<>();
   private final InMemoryTracerOptions.Built options;
-  private final AtomicReference<LocalDateTime> lastUpdate = new AtomicReference<>(LocalDateTime.now());
+  private final AtomicReference<Instant> lastUpdate = new AtomicReference<>(Instant.now());
   private final ScheduledExecutorService cleanupExecutor = Executors.newSingleThreadScheduledExecutor();
 
   public InMemoryRequestTracer() {
@@ -96,7 +94,7 @@ public class InMemoryRequestTracer implements RequestTracer {
   }
 
   private synchronized void callHandler() {
-    LocalDateTime now = LocalDateTime.now();
+    Instant now = Instant.now();
     Duration sinceLastUpdate = Duration.between(lastUpdate.get(), now);
     Tuple2<List<SpansForOperation>, List<InMemoryRequestSpan>> ops =
       InMemoryRequestTracerHandlerOperationsUtil.associateTopLevelSpansWithChildren(spans);
@@ -110,10 +108,10 @@ public class InMemoryRequestTracer implements RequestTracer {
     });
 
     // As a precaution against bugs, kill any old dangling spans.
-    ZonedDateTime tooOld = ZonedDateTime.now().minus(sinceLastUpdate.multipliedBy(2));
+    Instant tooOld = Instant.now().minus(sinceLastUpdate.multipliedBy(2));
     spans = ops.getT2()
       .stream()
-      .filter(v -> v.startLocal().isAfter(tooOld))
+      .filter(v -> v.startInstant().isAfter(tooOld))
       .collect(Collectors.toList());
     lastUpdate.set(now);
   }
