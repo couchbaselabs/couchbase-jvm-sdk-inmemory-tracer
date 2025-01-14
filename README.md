@@ -184,7 +184,7 @@ The `ExampleHandlers::writeAllOperations` handler, which can be enabled to run (
 } ]
 ```
 
-While this is the output from a single failure query:
+While this is the output from a single failed query:
 
 ```
 [ {
