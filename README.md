@@ -236,7 +236,7 @@ Users should feel free to add their own handlers outputting metrics or JSON to t
 # Compatibility
 This is provided as a separate library, to make it easier to use against various versions of the Couchbase SDKs.
 
-It should be compatible with the Couchbase Java, Kotlin and Scala SDKs.  Building the library from source requires JDK 9 or later.  At runtime, Java 8 or later is required.
+It should be compatible with the Couchbase Java, Kotlin and Scala SDKs.  Building the library from source requires JDK 8 or later.  At runtime, Java 8 or later is required.
 
 The SDK interfaces this library relies on have been stable from core-io 2.3.4 onwards (core-io is the library shared by all Couchbase JVM SDKs), and so this library is expected to work without issue against Java SDK 3.3.4 onwards, Scala SDK 1.3.4 onwards, and Kotlin SDK 1.0.4 onwards.
 
@@ -262,3 +262,9 @@ The handlers are called on a separate thread, to reduce impact on the SDK.
 
 # Limitations
 Any simple operations such as KV upserts or SQL++ queries should work, but results may vary for more complex compound operations such as ACID transactions.
+
+# For Maintainers
+Deployment (after setting up for deployment):
+```
+mvn deploy
+```
