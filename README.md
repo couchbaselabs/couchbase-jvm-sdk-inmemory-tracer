@@ -20,20 +20,20 @@ First, include the library in your project using Maven:
 <dependency>
     <groupId>com.couchbase.client</groupId>
     <artifactId>couchbase-jvm-sdk-inmemory-tracer</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
 or Gradle:
 
 ```
-implementation 'com.couchbase.client:couchbase-jvm-sdk-inmemory-tracer:1.0.0'
+implementation 'com.couchbase.client:couchbase-jvm-sdk-inmemory-tracer:1.0.1'
 ```
 
 or SBT:
 
 ```
-libraryDependencies += "com.couchbase.client" % "couchbase-jvm-sdk-inmemory-tracer" % "1.0.0"
+libraryDependencies += "com.couchbase.client" % "couchbase-jvm-sdk-inmemory-tracer" % "1.0.1"
 ```
 
 Second, provide an `InMemoryRequestTracer` when creating your Couchbase JVM SDK `Cluster` object:
