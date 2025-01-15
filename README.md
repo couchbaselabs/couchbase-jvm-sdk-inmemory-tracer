@@ -12,9 +12,31 @@ Users can handle the spans however they want, with two example handlers provided
 The library is intended for temporary use, to diagnose issues, rather than permanently instrumenting an application.  Full OpenTelemetry consumers such as Honeycomb are the better option for that.
 
 # Usage
-Include the library in your project (further instructions will be provided once the library is published to Sonatype).
+There are just two steps needed.
 
-Provide an `InMemoryRequestTracer` when creating your Couchbase JVM SDK `Cluster` object:
+First, include the library in your project using Maven:
+
+```
+<dependency>
+    <groupId>com.couchbase.client</groupId>
+    <artifactId>couchbase-jvm-sdk-inmemory-tracer</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+or Gradle:
+
+```
+implementation 'com.couchbase.client:couchbase-jvm-sdk-inmemory-tracer:1.0.0'
+```
+
+or SBT:
+
+```
+libraryDependencies += "com.couchbase.client" % "couchbase-jvm-sdk-inmemory-tracer" % "1.0.0"
+```
+
+Second, provide an `InMemoryRequestTracer` when creating your Couchbase JVM SDK `Cluster` object:
 
 ```
 InMemoryRequestTracer tracer = new InMemoryRequestTracer();
@@ -57,7 +79,7 @@ InMemoryRequestTracer tracer = new InMemoryRequestTracer(InMemoryTracerOptions.i
 The `ExampleHandlers::writeAggregatedReport` handler (which is the default) will output something like (a single KV operation was run for this example, which succeeded):
 
 ```
-{
+[pool-1-thread-1] INFO com.couchbase.client.ExampleHandlers - Aggregated report for 1 operations over last PT9.999228S: {
   "kv" : {
     "upsert" : {
       "successfulOps" : {
