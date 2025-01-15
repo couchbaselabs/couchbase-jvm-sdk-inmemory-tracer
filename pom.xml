@@ -6,7 +6,7 @@
 
     <groupId>com.couchbase.client</groupId>
     <artifactId>couchbase-jvm-sdk-inmemory-tracer</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <name>Couchbase JVM SDK In-Memory Tracer</name>
     <description> A simple diagnostic tracer that captures the Couchbase JVM SDKs' OpenTelemetry tracing in-memory</description>

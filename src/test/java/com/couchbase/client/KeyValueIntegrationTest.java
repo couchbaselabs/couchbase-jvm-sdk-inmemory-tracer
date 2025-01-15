@@ -3,6 +3,7 @@ package com.couchbase.client;
 import com.couchbase.client.java.Collection;
 import com.couchbase.client.java.json.JsonObject;
 import com.couchbase.client.operations.Operation;
+import com.couchbase.client.operations.Operations;
 import com.couchbase.client.util.CouchbaseResources;
 import com.couchbase.client.util.TestInMemoryRequestTracer;
 import org.junit.jupiter.api.AfterAll;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Timeout;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 import static com.couchbase.client.InMemoryTracerOptions.inMemoryTracerOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
