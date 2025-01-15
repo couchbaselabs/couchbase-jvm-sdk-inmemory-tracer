@@ -53,4 +53,32 @@ public class KeyValueIntegrationTest {
     ExampleReports.exampleAggregatedReport(ops);
     ExampleReports.exampleOperationsOutput(ops);
   }
+
+  @Test
+  public void mixedKvOperations() {
+    Collection collection = test.bucket().defaultCollection();
+    collection.upsert("id1", JsonObject.create());
+    collection.upsert("id2", JsonObject.create());
+    collection.remove("id1");
+    collection.get("id2");
+
+    InMemoryRequestTracerHandlerOperations ops = testTracer.waitForNonEmptyOperationsAndClear();
+    assertEquals(4, ops.operations().size());
+
+    Map<String, Operations> groupedByOpType = ops.operations().groupByOperationType();
+
+    assertEquals(3, groupedByOpType.size());
+    assertEquals(2, groupedByOpType.get("upsert").operations().size());
+    assertEquals(1, groupedByOpType.get("remove").operations().size());
+    assertEquals(1, groupedByOpType.get("get").operations().size());
+
+    Map<String, Operations> groupedByService = ops.operations().groupByService();
+
+    assertEquals(1, groupedByService.size());
+    assertEquals(4, groupedByService.get("kv").operations().size());
+
+    // Just check nothing is thrown
+    ExampleReports.exampleAggregatedReport(ops);
+    ExampleReports.exampleOperationsOutput(ops);
+  }
 }

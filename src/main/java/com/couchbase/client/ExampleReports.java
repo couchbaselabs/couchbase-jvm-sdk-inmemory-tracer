@@ -54,7 +54,7 @@ public class ExampleReports {
       operationsForService.groupByOperationType().forEach((operationType, operationsForOperationType) -> {
         ObjectNode jsonForOperation = Mapper.createObjectNode();
 
-        operationsForService.groupByIfSucceeded().forEach((didSucceed, operationsForIfSucceeded) -> {
+        operationsForOperationType.groupByIfSucceeded().forEach((didSucceed, operationsForIfSucceeded) -> {
 
           Durations durations = operationsForIfSucceeded.durationsMicroseconds();
           NetworkCalls networkCalls = operationsForIfSucceeded.networkCalls();
