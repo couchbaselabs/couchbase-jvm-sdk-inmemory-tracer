@@ -23,6 +23,7 @@ import java.time.Duration;
  * The InMemoryRequestTracerHandler is used to evaluate the in-memory request tracer spans.
  */
 @Stability.Volatile
+@FunctionalInterface
 public interface InMemoryRequestTracerHandler {
   void evaluate(InMemoryRequestTracerHandlerOperations operations, Duration sinceLastReport);
 } 
