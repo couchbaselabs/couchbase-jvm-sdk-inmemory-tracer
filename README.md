@@ -286,7 +286,9 @@ The handlers are called on a separate thread, to reduce impact on the SDK.
 Any simple operations such as KV upserts or SQL++ queries should work, but results may vary for more complex compound operations such as ACID transactions.
 
 # For Maintainers
-Deployment (after setting up for deployment):
+Before running tests, edit `src/test/resources/com/couchbase/client/integration.properties` to point at your cluster.
+
+Deployment (after initial one-off Sonatype setup):
 ```
-mvn deploy
+mvn clean deploy
 ```
