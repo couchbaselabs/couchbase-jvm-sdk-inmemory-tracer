@@ -18,7 +18,7 @@ package com.couchbase.client.spans;
 import com.couchbase.client.core.annotation.Stability;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -52,7 +52,7 @@ public class SpansForOperation {
     return span.duration();
   }
 
-  public ZonedDateTime start() {
-    return span.startLocal();
+  public Instant start() {
+    return span.startInstant();
   }
 }

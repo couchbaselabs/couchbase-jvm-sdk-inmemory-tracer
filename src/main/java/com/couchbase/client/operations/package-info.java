@@ -13,17 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.couchbase.client;
 
-import com.couchbase.client.core.annotation.Stability;
+@NullMarked
+package com.couchbase.client.operations;
 
-import java.time.Duration;
-
-/**
- * The InMemoryRequestTracerHandler is used to evaluate the in-memory request tracer spans.
- */
-@Stability.Volatile
-@FunctionalInterface
-public interface InMemoryRequestTracerHandler {
-  void evaluate(InMemoryRequestTracerHandlerOperations operations, Duration sinceLastReport);
-} 
+import org.jspecify.annotations.NullMarked;

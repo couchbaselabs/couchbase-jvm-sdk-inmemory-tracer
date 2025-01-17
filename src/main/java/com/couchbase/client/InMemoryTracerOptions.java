@@ -47,7 +47,7 @@ public class InMemoryTracerOptions {
   }
 
   /**
-   * Sets the handlers, which will be called on a periodic basic ({@link this#interval(Duration)}) with the operations
+   * Sets the handlers, which will be called on a periodic basic ({@link #interval(Duration)}) with the operations
    * that have occurred since the last time it was called.
    * <p>
    * The handlers will be called in the order they are provided.

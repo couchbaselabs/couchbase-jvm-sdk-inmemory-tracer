@@ -15,8 +15,8 @@
  */
 package com.couchbase.client.operations;
 
-import com.couchbase.client.InMemoryRequestTracerHandlerOperations;
 import com.couchbase.client.Durations;
+import com.couchbase.client.InMemoryRequestTracerHandlerOperations;
 import com.couchbase.client.core.annotation.Stability;
 import com.couchbase.client.core.cnc.TracingIdentifiers;
 import com.couchbase.client.spans.InMemoryRequestSpan;
@@ -29,6 +29,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.couchbase.client.util.DurationUtil.toMicros;
 
 /**
  * Wraps a list of {@link Operation} instances.
@@ -125,7 +127,7 @@ public class Operations {
    * in this object, in microseconds.
    */
   public Durations durationsMicroseconds() {
-    return new Durations(operations.stream().map((o -> (o.duration().toNanos()) / 1000)));
+    return new Durations(operations.stream().map(o -> toMicros(o.duration())));
   }
 
   /**
@@ -135,8 +137,9 @@ public class Operations {
     HashMap<String, Integer> exceptionCounts = new HashMap<>();
 
     operations.forEach(op -> {
-      if (op.spans().span().exception() != null) {
-        String exceptionName = op.spans().span().exception().getClass().getSimpleName();
+      Throwable exception = op.spans().span().exception();
+      if (exception != null) {
+        String exceptionName = exception.getClass().getSimpleName();
         exceptionCounts.merge(exceptionName, 1, Integer::sum);
       }
     });

@@ -21,7 +21,9 @@ import com.couchbase.client.spans.InMemoryRequestSpan;
 import org.jspecify.annotations.Nullable;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
+
+import static com.couchbase.client.util.DurationUtil.durationOfMicros;
 
 /**
  * A {@link Operation} can consist of zero or more underlying network calls.  Each is represented by an instance of this class.
@@ -48,7 +50,7 @@ public class NetworkCall {
   public @Nullable Duration serverDuration() {
     Object serverDuration = span.attribute(TracingIdentifiers.ATTR_SERVER_DURATION);
     if (serverDuration instanceof Long) {
-      return Duration.ofNanos((Long) serverDuration * 1000);
+      return durationOfMicros((Long) serverDuration);
     }
     return null;
   }
@@ -63,8 +65,8 @@ public class NetworkCall {
   /**
    * When this network call started, from the SDK's point of view.
    */
-  public ZonedDateTime start() {
-    return span.startLocal();
+  public Instant start() {
+    return span.startInstant();
   }
 
   /**

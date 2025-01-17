@@ -18,7 +18,7 @@ package com.couchbase.client.operations;
 import com.couchbase.client.core.annotation.Stability;
 
 /**
- *
+ * Stores simple statistics for each exception.
  */
 @Stability.Volatile
 public class ExceptionStats {

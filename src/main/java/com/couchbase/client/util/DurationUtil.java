@@ -13,17 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.couchbase.client;
+package com.couchbase.client.util;
 
 import com.couchbase.client.core.annotation.Stability;
 
 import java.time.Duration;
 
-/**
- * The InMemoryRequestTracerHandler is used to evaluate the in-memory request tracer spans.
- */
-@Stability.Volatile
-@FunctionalInterface
-public interface InMemoryRequestTracerHandler {
-  void evaluate(InMemoryRequestTracerHandlerOperations operations, Duration sinceLastReport);
-} 
+import static java.util.concurrent.TimeUnit.MICROSECONDS;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
+
+@Stability.Internal
+public class DurationUtil {
+  private DurationUtil() {
+  }
+
+  public static long toMicros(Duration d) {
+    return NANOSECONDS.toMicros(d.toNanos());
+  }
+
+  public static Duration durationOfMicros(long micros) {
+    return Duration.ofNanos(MICROSECONDS.toNanos(micros));
+  }
+}

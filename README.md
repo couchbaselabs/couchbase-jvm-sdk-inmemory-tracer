@@ -12,9 +12,31 @@ Users can handle the spans however they want, with two example handlers provided
 The library is intended for temporary use, to diagnose issues, rather than permanently instrumenting an application.  Full OpenTelemetry consumers such as Honeycomb are the better option for that.
 
 # Usage
-Include the library in your project (further instructions will be provided once the library is published to Sonatype).
+There are just two steps needed.
 
-Provide an `InMemoryRequestTracer` when creating your Couchbase JVM SDK `Cluster` object:
+First, include the library in your project using Maven:
+
+```
+<dependency>
+    <groupId>com.couchbase.client</groupId>
+    <artifactId>couchbase-jvm-sdk-inmemory-tracer</artifactId>
+    <version>1.0.1</version>
+</dependency>
+```
+
+or Gradle:
+
+```
+implementation 'com.couchbase.client:couchbase-jvm-sdk-inmemory-tracer:1.0.1'
+```
+
+or SBT:
+
+```
+libraryDependencies += "com.couchbase.client" % "couchbase-jvm-sdk-inmemory-tracer" % "1.0.1"
+```
+
+Second, provide an `InMemoryRequestTracer` when creating your Couchbase JVM SDK `Cluster` object:
 
 ```
 InMemoryRequestTracer tracer = new InMemoryRequestTracer();
@@ -57,7 +79,7 @@ InMemoryRequestTracer tracer = new InMemoryRequestTracer(InMemoryTracerOptions.i
 The `ExampleHandlers::writeAggregatedReport` handler (which is the default) will output something like (a single KV operation was run for this example, which succeeded):
 
 ```
-{
+[pool-1-thread-1] INFO com.couchbase.client.ExampleHandlers - Aggregated report for 1 operations over last PT9.999228S: {
   "kv" : {
     "upsert" : {
       "successfulOps" : {
@@ -171,33 +193,33 @@ The `ExampleHandlers::writeAllOperations` handler, which can be enabled to run (
 [ {
   "name" : "query",
   "service" : "query",
-  "start" : "2025-01-13T14-34-57.397Z",
+  "start" : "2025-01-13T14:34:57.397123Z",
   "durationUs" : 33504,
   "statement" : "SELECT 'hello' AS GREETING",
   "retries" : 0,
   "networkCalls" : [ {
     "durationUs" : 7372,
-    "start" : "2025-01-13T14-34-57.402Z",
+    "start" : "2025-01-13T14:34:57.402123Z",
     "host" : "192.168.0.99",
     "port" : 8093
   } ]
 } ]
 ```
 
-While this is the output from a single failure query:
+While this is the output from a single failed query:
 
 ```
 [ {
   "name" : "query",
   "service" : "query",
-  "start" : "2025-01-13T14-55-03.375Z",
+  "start" : "2025-01-13T14:55:03.375123Z",
   "durationUs" : 54476,
   "statement" : "BAD SQL++ TO FORCE A FAILURE",
   "exception" : "com.couchbase.client.core.error.ParsingFailureException: Parsing of the input failed {\"completed\":true,\"coreId\":\"0x5685c00c00000001\",\"errors\":[{\"additional\":{\"line\":1,\"column\":5},\"code\":3000,\"message\":\"syntax error - line 1, column 5, near 'BAD ', at: SQL\",\"retry\":false}],\"httpStatus\":400,\"idempotent\":false,\"lastDispatchedFrom\":\"192.168.1.120:58521\",\"lastDispatchedTo\":\"192.168.0.99:8093\",\"requestId\":5,\"requestType\":\"QueryRequest\",\"retried\":0,\"service\":{\"operationId\":\"null\",\"statement\":\"BAD SQL++ TO FORCE A FAILURE\",\"type\":\"query\"},\"timeoutMs\":75000,\"timings\":{\"dispatchMicros\":9378,\"totalDispatchMicros\":9378,\"totalMicros\":52305}}",
   "retries" : 0,
   "networkCalls" : [ {
     "durationUs" : 9371,
-    "start" : "2025-01-13T14-55-03.382Z",
+    "start" : "2025-01-13T14:55:03.382123Z",
     "host" : "192.168.0.99",
     "port" : 8093
   } ]
@@ -209,7 +231,7 @@ And the output from a single successful KV operation:
 [ {
   "name" : "upsert",
   "service" : "kv",
-  "start" : "2025-01-13T14-59-25.275Z",
+  "start" : "2025-01-13T14:59:25.275123Z",
   "durationUs" : 27169,
   "documentId" : "id",
   "bucket" : "default",
@@ -218,11 +240,11 @@ And the output from a single successful KV operation:
   "retries" : 0,
   "requestEncoding" : {
     "durationUs" : 3315,
-    "start" : "2025-01-13T14-59-25.275Z"
+    "start" : "2025-01-13T14:59:25.275123Z"
   },
   "networkCalls" : [ {
     "durationUs" : 13081,
-    "start" : "2025-01-13T14-59-25.286Z",
+    "start" : "2025-01-13T14:59:25.286123Z",
     "host" : "192.168.0.99",
     "port" : 11210,
     "durability" : "NONE",
@@ -236,7 +258,7 @@ Users should feel free to add their own handlers outputting metrics or JSON to t
 # Compatibility
 This is provided as a separate library, to make it easier to use against various versions of the Couchbase SDKs.
 
-It should be compatible with the Couchbase Java, Kotlin and Scala SDKs.  The library is written in JDK 8 to maximise compatibility.
+It should be compatible with the Couchbase Java, Kotlin and Scala SDKs.  Building the library from source requires JDK 8 or later.  At runtime, Java 8 or later is required.
 
 The SDK interfaces this library relies on have been stable from core-io 2.3.4 onwards (core-io is the library shared by all Couchbase JVM SDKs), and so this library is expected to work without issue against Java SDK 3.3.4 onwards, Scala SDK 1.3.4 onwards, and Kotlin SDK 1.0.4 onwards.
 
@@ -262,3 +284,11 @@ The handlers are called on a separate thread, to reduce impact on the SDK.
 
 # Limitations
 Any simple operations such as KV upserts or SQL++ queries should work, but results may vary for more complex compound operations such as ACID transactions.
+
+# For Maintainers
+Before running tests, edit `src/test/resources/com/couchbase/client/integration.properties` to point at your cluster.
+
+Deployment (after initial one-off Sonatype setup):
+```
+mvn clean deploy
+```
