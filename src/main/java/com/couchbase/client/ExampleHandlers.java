@@ -18,6 +18,7 @@ package com.couchbase.client;
 import com.couchbase.client.core.annotation.Stability;
 import com.couchbase.client.core.deps.com.fasterxml.jackson.databind.ObjectMapper;
 import com.couchbase.client.core.deps.com.fasterxml.jackson.databind.SerializationFeature;
+import com.couchbase.client.core.deps.com.fasterxml.jackson.databind.json.JsonMapper;
 import com.couchbase.client.core.deps.com.fasterxml.jackson.databind.node.ArrayNode;
 import com.couchbase.client.core.deps.com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -41,6 +42,9 @@ import java.time.format.DateTimeFormatter;
 public class ExampleHandlers {
   private static final Logger logger = LoggerFactory.getLogger(ExampleHandlers.class);
 
+  private static final ObjectMapper mapper = JsonMapper.builder()
+    .enable(SerializationFeature.INDENT_OUTPUT)
+    .build();
   private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss.SSSX");
 
   private ExampleHandlers() {
@@ -51,9 +55,6 @@ public class ExampleHandlers {
    */
   public static void writeAggregatedReport(InMemoryRequestTracerHandlerOperations operations, Duration sinceLastReport) {
     ObjectNode aggregatedReport = ExampleReports.exampleAggregatedReport(operations);
-
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
     try {
       String repAsStr = mapper.writeValueAsString(aggregatedReport);
@@ -70,9 +71,6 @@ public class ExampleHandlers {
    */
   public static void writeAllOperations(InMemoryRequestTracerHandlerOperations operations, Duration sinceLastReport) {
     ArrayNode ops = ExampleReports.exampleOperationsOutput(operations);
-
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
     try {
       String opsAsStr = mapper.writeValueAsString(ops);
